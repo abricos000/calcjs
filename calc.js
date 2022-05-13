@@ -11,18 +11,21 @@
 let input = document.querySelector('.calc_input');
 
 const insert = (num) =>{
-  localStorage.clear('rvtSave');
+  localStorage.removeItem('rvtSave');
+  //localStorage.clear('rvtSave');
   if(input.textContent ==='0'){
   input.textContent = '';
   }
   input.textContent =input.textContent + num;
 }
 const clean = () => {
-  localStorage.clear('rvtSave');
+  localStorage.removeItem('rvtSave');
+  //localStorage.clear('rvtSave');
   input.textContent ='0';
 }
 const back = () =>{
-  localStorage.clear('rvtSave');
+  localStorage.removeItem('rvtSave');
+  //localStorage.clear('rvtSave');
   let exp = input.textContent;
   input.textContent = exp.substring(0,exp.length-1);
 }
@@ -36,12 +39,12 @@ const LoadRvt = (keys) => {
   let b = document.querySelector(".Rvt");
   b.removeAttribute("onclick", "LoadRvt('rvtSave')");
   
-  const newExp=JSON.parse(localStorage.getItem(keys));
-   if(localStorage.key(keys)!=null)
-   {
+  if(localStorage.getItem(keys)!=null)
+  {
+      let newExp=JSON.parse(localStorage.getItem(keys));
       input.textContent = newExp;
-      // console.log(newExp);
-   }
+      console.log('rvt ' + newExp);
+  }
 }
 const equal = () => {
   let exp = input.textContent;
@@ -53,12 +56,13 @@ const equal = () => {
     b.setAttribute("onclick", "LoadRvt('rvtSave')");
   }
   
-  if(localStorage.key('rvtSave')==null){
+  if(localStorage.getItem('rvtSave')==null){
     SaveRvt('rvtSave',exp);
   }
 }
 const change = () =>{
-  localStorage.clear('rvtSave');
+  localStorage.removeItem('rvtSave');
+  //localStorage.clear('rvtSave');
   let exp = input.textContent;
   input.textContent = exp * -1;
 }
@@ -67,40 +71,56 @@ const memorySave = () =>{
 
   SaveRvt('valueSave',eval(exp)); 
 
-  const newExp=JSON.parse(localStorage.getItem('valueSave'));
-  console.log(newExp);
+  if(localStorage.getItem('valueSave')!=null){
+      
+      const newExp=JSON.parse(localStorage.getItem('valueSave'));
+      console.log(newExp);
+  }
 }
-// const memoryClear = () =>{
-//   if(localStorage.key('valueSave')!=null)
-//   {
-//       localStorage.clear('valueSave');
-//   }
-
-// }
+const memoryClear = () =>{
+  if(localStorage.getItem('valueSave')!=null){
+      localStorage.removeItem('valueSave');
+      //localStorage.clear('valueSave');
+  }
+}
 const memoryPlus = () =>{
-  
+
+  if(localStorage.getItem('valueSave')!=null){
  
-    const newExp=JSON.parse(localStorage.getItem('valueSave'));
-    let exp = input.textContent;
-    const new_Exp = newExp + eval(exp);
-    console.log(new_Exp);
-  
+  let newExp=JSON.parse(localStorage.getItem("valueSave"));
+  let exp = input.textContent;
+  const new_Exp = newExp + eval(exp);
+  console.log("________");
+  console.log('newExp ' + newExp);
+  console.log('eval(exp) ' + eval(exp));
+  console.log('new_Exp ' + new_Exp);
+
+  SaveRvt('valueSave',new_Exp);
+  }
 }
 const memoryMinus = () =>{
  
+  if(localStorage.getItem('valueSave')!=null){
   
-      const newExp=JSON.parse(localStorage.getItem('valueSave'));
- 
-      let new_Exp = newExp - eval(input.textContent);
-      console.log(new_Exp);
-  
+      let newExp=(localStorage.getItem("valueSave"));
+      let exp = input.textContent;
+      const new_Exp = newExp - eval(exp);
+      console.log("________");
+      console.log('newExp ' + newExp);
+      console.log('eval(exp) ' + eval(exp));
+      console.log('new_Exp ' + new_Exp);
+
+      SaveRvt('valueSave',new_Exp);
+  }
 }
 const memoryRead = () =>{
+  if(localStorage.getItem('valueSave')!=null){
  
       const newExp=JSON.parse(localStorage.getItem('valueSave'));
+      console.log("!!!!!!!!!!");
       console.log(newExp);
  
-      // input.textContent = newExp ;
-      
+      input.textContent = newExp ;
+  }    
   
 }
