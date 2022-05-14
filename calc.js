@@ -1,126 +1,112 @@
-// MS (Memory Save) - кнопка означает сохранить число, отображенное в данный момент на дисплее калькулятора в память.
+let input = document.querySelector('.calc__input');
 
-// MR (Memory Read) - кнопка означает считать число из ячейки памяти и вывести его на дисплей.
+const addSelector = 'Rvt_action';
+const addClass = `.${addSelector}`;
+const rvtSelector = '.js-rvt-button';
+const rvtClass = `.${rvtSelector}`;
 
-// MC (Memory Clear) - кнопка означает стереть данные из ячейки памяти.
+const rvtSave = 'rvtSave';
+const valueSave = 'valueSave';
 
-// M+ - прибавить к числу из памяти число, отображенное на дисплее и результат записать в память вместо предыдущего.
+const zero = '0';
+const empty = '';
+const maxInputLength = 20;
 
-// M- - вычесть из числа в памяти число, отображенное на дисплее калькулятора и результат записать в память.
- 
-let input = document.querySelector('.calc_input');
 
-const insert = (num) =>{
-  localStorage.removeItem('rvtSave');
-  //localStorage.clear('rvtSave');
-  if(input.textContent ==='0'){
-  input.textContent = '';
+
+const remove = (key) => {
+     localStorage.removeItem(key);
+   }
+
+
+
+const handleInsert = (num) => {
+  remove(rvtSave);
+
+  if (input.textContent == zero) {
+    input.textContent = empty;
   }
-  input.textContent =input.textContent + num;
+  
+  if (input.textContent.length <= maxInputLength) {
+    input.textContent = input.textContent + num;
+  }
 }
-const clean = () => {
-  localStorage.removeItem('rvtSave');
-  //localStorage.clear('rvtSave');
-  input.textContent ='0';
+const handleClean = () => {
+  remove(rvtSave);
+  input.textContent = zero;
 }
-const back = () =>{
-  localStorage.removeItem('rvtSave');
-  //localStorage.clear('rvtSave');
-  let exp = input.textContent;
-  input.textContent = exp.substring(0,exp.length-1);
+const handleBack = () => {
+  remove(rvtSave);
+  let textContent = input.textContent;
+  input.textContent = textContent.substring(0,textContent.length-1);
 }
-
-const SaveRvt = (keys,obj) => {
+const saveInMemory = (keys,obj) => {
   localStorage.setItem(keys, JSON.stringify(obj));
 }
-const LoadRvt = (keys) => {
-  document.querySelector('.Rvt').classList.remove('Rvt_action');
+const handleLoadRtv = (keys) => {
+  const findRvtSelector = document.querySelector(rvtSelector);
+  findRvtSelector.classList.remove(addSelector);
+  findRvtSelector.removeAttribute("onclick", "handleLoadRtv(rvtSave)");
  
-  let b = document.querySelector(".Rvt");
-  b.removeAttribute("onclick", "LoadRvt('rvtSave')");
+  if (localStorage.getItem(keys) != null) {
+      let newtextContent = JSON.parse(localStorage.getItem(keys));
+      input.textContent = newtextContent;    
+  }
+}
+const handleEqual = () => {
+  let textContent = input.textContent;
   
-  if(localStorage.getItem(keys)!=null)
-  {
-      let newExp=JSON.parse(localStorage.getItem(keys));
-      input.textContent = newExp;
-      console.log('rvt ' + newExp);
+  if (textContent !== zero) {
+    input.textContent = Math.trunc(eval(textContent) * 100000000) / 100000000;
+    const findRvtSelector = document.querySelector(rvtSelector);
+    findRvtSelector.classList.add(addSelector);
+    findRvtSelector.setAttribute("onclick", "handleLoadRtv(rvtSave)");
   }
-}
-const equal = () => {
-  let exp = input.textContent;
-  
-  if(exp!=='0'){
-    input.textContent = eval(exp);
-    document.querySelector('.Rvt').classList.add('Rvt_action');
-    let b = document.querySelector(".Rvt");
-    b.setAttribute("onclick", "LoadRvt('rvtSave')");
-  }
-  
-  if(localStorage.getItem('rvtSave')==null){
-    SaveRvt('rvtSave',exp);
-  }
-}
-const change = () =>{
-  localStorage.removeItem('rvtSave');
-  //localStorage.clear('rvtSave');
-  let exp = input.textContent;
-  input.textContent = exp * -1;
-}
-const memorySave = () =>{
-  let exp = input.textContent;
 
-  SaveRvt('valueSave',eval(exp)); 
-
-  if(localStorage.getItem('valueSave')!=null){
-      
-      const newExp=JSON.parse(localStorage.getItem('valueSave'));
-      console.log(newExp);
+  if (localStorage.getItem(rvtSave) == null) {
+    saveInMemory(rvtSave,textContent);
   }
 }
-const memoryClear = () =>{
-  if(localStorage.getItem('valueSave')!=null){
-      localStorage.removeItem('valueSave');
-      //localStorage.clear('valueSave');
+const handleChange = () => {
+  remove(rvtSave);
+  let textContent = input.textContent;
+  input.textContent = textContent * -1;
+}
+const handleMemorySave = () => {
+  let textContent = input.textContent;
+  saveInMemory(valueSave,eval(textContent)); 
+
+  if (localStorage.getItem(valueSave) != null) {
+   const newtextContent = JSON.parse(localStorage.getItem(valueSave)); 
   }
 }
-const memoryPlus = () =>{
+const handleMemoryClear = () => {
+  if (localStorage.getItem(valueSave) != null) {
+  remove(valueSave);
+  }
+}
+const handleMemoryPlus = () => {
 
-  if(localStorage.getItem('valueSave')!=null){
+  if (localStorage.getItem(valueSave) != null) {
+   let newtextContent = JSON.parse(localStorage.getItem(valueSave));
+   let textContent = input.textContent;
+   const new_textContent = newtextContent + eval(textContent);
+   saveInMemory(valueSave,new_textContent);
+  }
+}
+const handleMemoryMinus = () => {
  
-  let newExp=JSON.parse(localStorage.getItem("valueSave"));
-  let exp = input.textContent;
-  const new_Exp = newExp + eval(exp);
-  console.log("________");
-  console.log('newExp ' + newExp);
-  console.log('eval(exp) ' + eval(exp));
-  console.log('new_Exp ' + new_Exp);
-
-  SaveRvt('valueSave',new_Exp);
+  if (localStorage.getItem(valueSave) != null) {
+      let newtextContent = JSON.parse(localStorage.getItem(valueSave));
+      let textContent = input.textContent;
+      const new_textContent = newtextContent - eval(textContent);
+      saveInMemory(valueSave,new_textContent);
   }
 }
-const memoryMinus = () =>{
- 
-  if(localStorage.getItem('valueSave')!=null){
-  
-      let newExp=(localStorage.getItem("valueSave"));
-      let exp = input.textContent;
-      const new_Exp = newExp - eval(exp);
-      console.log("________");
-      console.log('newExp ' + newExp);
-      console.log('eval(exp) ' + eval(exp));
-      console.log('new_Exp ' + new_Exp);
+const handleMemoryRead = () => {
 
-      SaveRvt('valueSave',new_Exp);
-  }
-}
-const memoryRead = () =>{
-  if(localStorage.getItem('valueSave')!=null){
- 
-      const newExp=JSON.parse(localStorage.getItem('valueSave'));
-      console.log("!!!!!!!!!!");
-      console.log(newExp);
- 
-      input.textContent = newExp ;
+  if (localStorage.getItem(valueSave) != null) {
+      const newtextContent = JSON.parse(localStorage.getItem(valueSave));
+      input.textContent = newtextContent ;
   }    
-  
 }
