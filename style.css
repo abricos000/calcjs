@@ -4,13 +4,16 @@
   font-style: normal;
   font-weight: 400;
 }
+
 :root {
+  --f-family:'Roboto', sans-serif;
   --color-black: #000;
   --color-white: #fff;
   --gray-1: #F1F1F1;
   --gray-2: #E5E5E5;
   --gray-3: #333;
 }
+
 .calc__btn{
   width: 40px;
   height: 40px;
@@ -25,18 +28,21 @@
   font-size: 14px;
   line-height: 16px;
 }
+
 .calc__btn:active{
   filter: brightness(90%);
 }
+
 .calc{
   width: 420px;
   height: 385px;
   background: var(--color-white);
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--f-family);
   padding: 18px;
   margin: 50px auto;
   border: var(--color-black) 1px solid;
 }
+
 .calc__screen{
   height: 60px;
   width: 370px;
@@ -47,6 +53,7 @@
   border: var(--gray-3) 1px solid;
   background: var(--gray-2);
 }
+
 .calc__input{
   height: auto;
   background: var(--gray-2);
@@ -54,6 +61,7 @@
   font-size: 28px;
   line-height: 33px;
 }
+
 .calc__wrapper{
   display: grid;
   width: 370px;
@@ -62,23 +70,28 @@
   grid-gap: 15px; 
   margin: 0 25px 25px 25px ;
 }
-.calc__btn__clear {
+
+.calc__btn_clear {
   grid-column: 4/4;
 }
-.calc__btn__position{
+
+.calc__btn_position{
   grid-column: 3/3;
 }
+
 .equal-position {
   grid-column: 7;
   grid-row: 4/6;
   height: auto;
 }
-.js-rvt-button{
+
+.calc__btn_rvt{
   border: none;
   box-shadow: none;
   background: var(--gray-2);
 }
-.Rvt_action{
+
+.rvt_action{
   border: 1px solid var(--color-black);
   box-shadow: 2px 2px 2px rgba(var(--color-black), 0.25);
   background: var(--gray-1);
