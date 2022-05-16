@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+
     <meta charset="utf-8">
     <title>Калькулятор</title>
     <link rel="stylesheet" href="style.css">
+    <link href="Fonts/Roboto" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href ="Fonts/Roboto" rel="stylesheet">
     <script defer  src="./calc.js" type="text/javascript"></script>
+    
   </head>
   <body>
 
 <div class="calc">
 
   <div class="calc__screen">
-    <div class="calc__input">0</div>
+    <div class="calc__input js-calc-input">0</div>
   </div>
   
   <div class="calc__wrapper">
 
-    <div class="calc__btn calc__btn_mc" onclick="handleMemoryClear()">MC</div>
-    <div class="calc__btn calc__btn__clear" onclick="handleBack()">C</div>
-    <div class="calc__btn calc__btn__ac" onclick="handleClean()">AC</div>
-    <div class="calc__btn calc__btn__arrow" onclick="handleBack()"> &larr;</div>
-    <div class="calc__btn js-rvt-button ">Rvt</div>
+    <div class="calc__btn calc__btn_mclear" onclick="handleMemoryClear()">MC</div>
+    <div class="calc__btn calc__btn_clear" onclick="handleBack()">C</div>
+    <div class="calc__btn calc__btn_ac" onclick="handleCleanInput()">AC</div>
+    <div class="calc__btn calc__btn_arrow" onclick="handleBack()"> &larr;</div>
+    <div class="calc__btn calc__btn_rvt js-rvt-button ">Rvt</div>
 
-    <div class="calc__btn calc__btn_ms" onclick="handleMemorySave()">MS</div>
-    <div class="calc__btn calc__btn__seven calc__btn__position" onclick="handleInsert('7')">7</div>
-    <div class="calc__btn calc__btn__eight" onclick="handleInsert('8')">8</div>
-    <div class="calc__btn calc__btn__nine" onclick="handleInsert('9')">9</div>
-    <div class="calc__btn calc__btn__division" onclick="handleInsert('/')">/</div>
-    <div class="calc__btn calc__btn__open-brace" onclick="handleInsert('(')">(</div>
+    <div class="calc__btn calc__btn_msave" onclick="handleMemorySave()">MS</div>
+    <div class="calc__btn calc__btn__seven calc__btn_position" onclick="handleInsert('7')">7</div>
+    <div class="calc__btn calc__btn_eight" onclick="handleInsert('8')">8</div>
+    <div class="calc__btn calc__btn_nine" onclick="handleInsert('9')">9</div>
+    <div class="calc__btn calc__btn_division" onclick="handleInsert('/')">/</div>
+    <div class="calc__btn calc__btn_open-brace" onclick="handleInsert('(')">(</div>
 
-    <div class="calc__btn calc__btn_mr" onclick="handleMemoryRead()">MR</div>
-    <div class="calc__btn calc__btn__four calc__btn__position" onclick="handleInsert('4')">4</div>
-    <div class="calc__btn calc__btn__five" onclick="handleInsert('5')">5</div>
-    <div class="calc__btn calc__btn__six" onclick="handleInsert('6')">6</div>
-    <div class="calc__btn calc__btn__myltiply" onclick="handleInsert('*')">*</div>
-    <div class="calc__btn calc__btn__close-brace" onclick="handleInsert(')')">)</div>
+    <div class="calc__btn calc__btn_mread" onclick="handleMemoryRead()">MR</div>
+    <div class="calc__btn calc__btn_four calc__btn_position" onclick="handleInsert('4')">4</div>
+    <div class="calc__btn calc__btn_five" onclick="handleInsert('5')">5</div>
+    <div class="calc__btn calc__btn_six" onclick="handleInsert('6')">6</div>
+    <div class="calc__btn calc__btn_myltiply" onclick="handleInsert('*')">*</div>
+    <div class="calc__btn calc__btn_close-brace" onclick="handleInsert(')')">)</div>
       
     <div class="calc__btn calc__btn_mplus" onclick="handleMemoryPlus()">M+</div>
-    <div class="calc__btn calc__btn__one calc__btn__position" onclick="handleInsert('1')">1</div>
-    <div class="calc__btn calc__btn__two" onclick="handleInsert('2')">2</div>
-    <div class="calc__btn calc__btn__three" onclick="handleInsert('3')">3</div>
-    <div class="calc__btn calc__btn__minus" onclick="handleInsert('-')">-</div>
-    <div class="calc__btn calc__btn__equal equal-position" onclick="handleEqual()">=</div>
+    <div class="calc__btn calc__btn_one calc__btn_position" onclick="handleInsert('1')">1</div>
+    <div class="calc__btn calc__btn_two" onclick="handleInsert('2')">2</div>
+    <div class="calc__btn calc__btn_three" onclick="handleInsert('3')">3</div>
+    <div class="calc__btn calc__btn_minus" onclick="handleInsert('-')">-</div>
+    <div class="calc__btn calc__btn_equal equal-position" onclick="handleEqual()">=</div>
 
     <div class="calc__btn calc__btn_mminus" onclick="handleMemoryMinus()">M-</div>
-    <div class="calc__btn calc__btn__zero calc__btn__position" onclick="handleInsert('0')">0</div>
-    <div class="calc__btn calc__btn__dot" onclick="handleInsert('.')">.</div>
-    <div class="calc__btn calc__btn__plus-minus" onclick="handleChange()">+/-</div>
-    <div class="calc__btn calc__btn__plus" onclick="handleInsert('+')">+</div>
+    <div class="calc__btn calc__btn_zero calc__btn_position" onclick="handleInsert('0')">0</div>
+    <div class="calc__btn calc__btn_dot" onclick="handleInsert('.')">.</div>
+    <div class="calc__btn calc__btn_plus-minus" onclick="handleChange()">+/-</div>
+    <div class="calc__btn calc__btn_plus" onclick="handleInsert('+')">+</div>
 
 
   </div>
