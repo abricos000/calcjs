@@ -21,10 +21,10 @@
   <div class="calc__wrapper">
 
     <div class="calc__btn calc__btn_mclear" onclick="handleMemoryClear()">MC</div>
-    <div class="calc__btn calc__btn_clear" onclick="handleBack()">C</div>
-    <div class="calc__btn calc__btn_ac" onclick="handleCleanInput()">AC</div>
-    <div class="calc__btn calc__btn_arrow" onclick="handleBack()"> &larr;</div>
-    <div class="calc__btn calc__btn_rvt js-rvt-button ">Rvt</div>
+    <div title="кнопка: Backspace" class="calc__btn calc__btn_clear" onclick="handleBack()">C</div>
+    <div title="кнопка: Delete" class="calc__btn calc__btn_ac" onclick="handleCleanInput()">AC</div>
+    <div title="кнопка: Backspace" class="calc__btn calc__btn_arrow" onclick="handleBack()"> &larr;</div>
+    <div title="кнопка: Home &larr;" class="calc__btn calc__btn_rvt js-rvt-button ">Rvt</div>
 
     <div class="calc__btn calc__btn_msave" onclick="handleMemorySave()">MS</div>
     <div class="calc__btn calc__btn__seven calc__btn_position" onclick="handleInsert('7')">7</div>
@@ -45,7 +45,7 @@
     <div class="calc__btn calc__btn_two" onclick="handleInsert('2')">2</div>
     <div class="calc__btn calc__btn_three" onclick="handleInsert('3')">3</div>
     <div class="calc__btn calc__btn_minus" onclick="handleInsert('-')">-</div>
-    <div class="calc__btn calc__btn_equal equal-position" onclick="handleEqual()">=</div>
+    <div title="кнопка: Enter" class="calc__btn calc__btn_equal equal-position" onclick="handleEqual()">=</div>
 
     <div class="calc__btn calc__btn_mminus" onclick="handleMemoryMinus()">M-</div>
     <div class="calc__btn calc__btn_zero calc__btn_position" onclick="handleInsert('0')">0</div>
