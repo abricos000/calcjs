@@ -22,118 +22,124 @@ const removeFromMemory = (key) => {
      localStorage.removeItem(key);
    }
 
-document.onkeydown = function (event) {
-const btnKey = event.key;
-  
-  if(btnKey == "1" || btnKey == "2" || btnKey == "3" || btnKey == "4" || btnKey == "5"
-   || btnKey == "6" || btnKey == "7" || btnKey == "8" || btnKey == "9" || btnKey == "0" 
-   || btnKey == "/" || btnKey == "+" || btnKey == "-" || btnKey == "*" || btnKey == "." 
-   || btnKey == "("  || btnKey == ")" ){
+const isNumber = (btnKey) => {
+  return !isNaN(btnKey)
+}
 
-   handleInsert(btnKey);
+const isOperator = (btnKey) => {
+  const operatorData = {
+    '/': true,
+    '(': true,
+    ')': true,
+    '+': true,
+    '-': true,
+    '*': true,
+    '.': true,
   }
-  else if(btnKey == 'Backspace'){
-         handleBack();
-       }
-  else if(btnKey == 'Enter'){
-         handleEqual();
-       }
-  else if(btnKey == 'ArrowLeft'){
-    handleLoadRtv(rvtSaveKey);
-      }
-      else if(btnKey == 'Delete'){
-        handleCleanInput();
-          } 
-        }
+  return operatorData[btnKey];
+}
+
+
+document.onkeydown = function (event) {
+  const btnKey = event.key;
+
+  if( isNumber(btnKey) || isOperator(btnKey) ){
+   return handleInsert(btnKey);
+  }
+  const helpedData = {
+    'Backspace': () => handleBackCounterDecrement(),
+    'ArrowLeft': () => handleLoadRtv(rvtSaveKey),
+    'Enter': () => handleEqual(),
+    'Delete': () => handleCleanInput(),
+  }
+  const handler = helpedData[btnKey]
+
+  if(handler) {
+    handler()
+ }
+}
     
-function ChekingLastInt(IndexLastElementString){
-  return (input.textContent[IndexLastElementString]=='+' || input.textContent[IndexLastElementString]=='-' || input.textContent[IndexLastElementString]=='/' || input.textContent[IndexLastElementString]=='*')
+const chekingLastInt = (IndexLastElementString) => {
+  const char = input.textContent[IndexLastElementString];
+  return (char=='+' || char=='-' || char=='/' || char=='*');
 }
 
-function ChekingLastFloat(IndexLastElementString){
-  return input.textContent[IndexLastElementString]=='.';
+const chekingLastFloat = (IndexLastElementString) => {
+  const char = input.textContent[IndexLastElementString];
+  return char=='.';
 }
 
-function ChekingLast(IndexLastElementString){
-  return (input.textContent[IndexLastElementString]=='+' || input.textContent[IndexLastElementString]=='-' || input.textContent[IndexLastElementString]=='/' || input.textContent[IndexLastElementString]=='*' || input.textContent[IndexLastElementString]=='.')
+const chekingLast = (IndexLastElementString) => {
+  const char = input.textContent[IndexLastElementString];
+  return (char=='+' || char=='-' || char=='/' || char=='*' || char=='.');
 }
 
-function ChekingLastPref(IndexLastElementString){
-  return (input.textContent[IndexLastElementString-1]=='+' || input.textContent[IndexLastElementString-1]=='-' || input.textContent[IndexLastElementString-1]=='/' || input.textContent[IndexLastElementString-1]=='*' || input.textContent[IndexLastElementString-1]=='.');
+const chekingLastPref = (IndexLastElementString) => {
+  const prevChar = input.textContent[IndexLastElementString-1];
+  return (prevChar=='+' || prevChar=='-' || prevChar=='/' || prevChar=='*' || prevChar=='.');
 }
 
 
 const handleInsert = (num) => {
   removeFromMemory(rvtSaveKey);
+  
+  if(input.textContent.length > maxInputLength){ 
+    return;
+  }
 
-  if (input.textContent == zero) {
+  if(input.textContent == zero){
     input.textContent = empty;
   }
-   if (input.textContent.length <= maxInputLength ) 
-   { 
-      if(input.textContent.length > 0)
-       { 
-                input.textContent = input.textContent + num;
-                let IndexLastElementString = input.textContent.length-1;
 
-                 if(ChekingLastInt(IndexLastElementString))
-                  {
-                    saveZnakIndex = IndexLastElementString;
-                    counterLength = 12;
-                    counterInt = 0;
-                  }
-
-                 else
-                 if(ChekingLastFloat(IndexLastElementString))
-                 {
-                   counterInt = 0;
-                   counterLength = 8;
-                 }
-
-                 else
-                 if(counterInt < counterLength)
-                 {
-                      counterInt++;
-                 }
-
-                 else
-                 if(counterInt > counterLength - 1)
-                 {
-                  handleBack1();
-                 }
-
-                 if( ChekingLastPref(IndexLastElementString) && ChekingLast(IndexLastElementString))
-                  {
-                     handleBack1();
-                  }
-                
-       }
-          else
-            {
-             counterInt++;
-             input.textContent = input.textContent + num;
-            }
-
-   }
+  if(input.textContent.length <= 0){
+    counterInt++;
+    input.textContent = input.textContent + num;
+    return;
   }
 
+  input.textContent = input.textContent + num;
+  let IndexLastElementString = input.textContent.length-1;
+
+    if(chekingLastInt(IndexLastElementString)){
+      saveZnakIndex = IndexLastElementString;
+      counterLength = 12;
+      counterInt = 0;
+    }
+
+    else if(chekingLastFloat(IndexLastElementString)){
+      counterInt = 0;
+      counterLength = 8;
+    }
+
+    else if(counterInt < counterLength){
+        counterInt++;
+    }
+
+    else if(counterInt > counterLength - 1){
+    handleBack();
+    }
+
+    if(chekingLastPref(IndexLastElementString) && chekingLast(IndexLastElementString)){
+        handleBack();
+    }
+  }
 
 const handleCleanInput = () => {
   removeFromMemory(rvtSaveKey);
   counterInt = 0;
   input.textContent = zero;
 }
-const handleBack = () => {
+const handleBackCounterDecrement = () => {
   removeFromMemory(rvtSaveKey);
+  
   if(counterInt > 0){
     counterInt--;
   }
   let textContent = input.textContent;
   input.textContent = textContent.substring(0,textContent.length-1);
 }
-const handleBack1 = () => {
+const handleBack = () => {
   removeFromMemory(rvtSaveKey);
-
   let textContent = input.textContent;
   input.textContent = textContent.substring(0,textContent.length-1);
 }
@@ -146,32 +152,34 @@ const handleLoadRtv = (keys) => {
   const findRvtSelector = document.querySelector(rvtSelector);
   findRvtSelector.classList.remove(addSelector);
   findRvtSelector.removeAttribute("onclick", "handleLoadRtv(rvtSaveKey)");
-  
  
-  if (localStorage.getItem(keys) != null) {
+  if(localStorage.getItem(keys) != null){
       let getKey = JSON.parse(localStorage.getItem(keys));
-      input.textContent = getKey;    
+      input.textContent = getKey;
   }
 }
 
 const handleEqual = () => {
   let textContent = input.textContent;
-  if (textContent !== zero) {
+
+  if(textContent !== zero){
     input.textContent = eval(textContent).toFixed(numberAfterPoint);
     let IndexLastElementString = input.textContent.length-1;
+
     while(input.textContent[IndexLastElementString] == zero){
-      handleBack();
+      handleBackCounterDecrement();
       IndexLastElementString--;
     }
-    if(input.textContent[IndexLastElementString]=='.'){
-      handleBack();
-    }
-    const findRvtSelector = document.querySelector(rvtSelector);
-    findRvtSelector.classList.add(addSelector);
-    findRvtSelector.setAttribute("onclick", "handleLoadRtv(rvtSaveKey)");
+
+  if(input.textContent[IndexLastElementString]=='.'){
+    handleBackCounterDecrement();
+  }
+  const findRvtSelector = document.querySelector(rvtSelector);
+  findRvtSelector.classList.add(addSelector);
+  findRvtSelector.setAttribute("onclick", "handleLoadRtv(rvtSaveKey)");
   }
 
-  if (localStorage.getItem(rvtSaveKey) == null) {
+  if(localStorage.getItem(rvtSaveKey) == null){
     saveInMemory(rvtSaveKey,textContent);
   }
 
@@ -181,36 +189,40 @@ const handleEqual = () => {
 
 const handleChange = () => {
   removeFromMemory(rvtSaveKey);
+
   if(saveZnakIndex!=0){
-  shiftString(saveZnakIndex);
-  addInsert(saveZnakIndex);
+    shiftString(saveZnakIndex);
+    addInsert(saveZnakIndex);
   }
-  else
-    if(saveZnakIndex==0){
+
+  else if(saveZnakIndex==0){
       input.textContent =  input.textContent * (-1);
-    }
+  }
 }
 
 const shiftString = (IndexLastElementString) => {
   input.textContent = input.textContent + '...';
+
   for( let i = input.textContent.length - 1; i > IndexLastElementString+3; i--){
-    rep(input.textContent, i-1, input.textContent[i-3]);
+    addCharacterInString(input.textContent, i-1, input.textContent[i-3]);
   }
 }
 
 const addInsert = (IndexLastElementString) => {
   input.textContent[IndexLastElementString]= '(';
-  rep(input.textContent,IndexLastElementString+1, '(');
-  rep(input.textContent,IndexLastElementString+2, '-');
-  rep(input.textContent, input.textContent.length-1, ')');
+  addCharacterInString(input.textContent,IndexLastElementString+1, '(');
+  addCharacterInString(input.textContent,IndexLastElementString+2, '-');
+  addCharacterInString(input.textContent, input.textContent.length-1, ')');
 }
 
-const rep = (str, IndexLastElementString,str2) =>  {
-  str = setCharAt(str,IndexLastElementString,str2);
- input.textContent = str
+
+const addCharacterInString = (str, IndexLastElementString,str2) => {
+ str = setCharAt(str,IndexLastElementString,str2);
+ input.textContent = str;
 }
 
 const setCharAt = (str,index,chr) => {
+
   if(index > str.length-1) return str;
   return str.substr(0,index) + chr + str.substr(index+1);
 }
@@ -219,41 +231,42 @@ const handleMemorySave = () => {
   let textContent = input.textContent;
   saveInMemory(valueSaveKey,eval(textContent)); 
 
-  if (localStorage.getItem(valueSaveKey) != null) {
-   const getKey = JSON.parse(localStorage.getItem(valueSaveKey)); 
+  if(localStorage.getItem(valueSaveKey) != null){
+    const getKey = JSON.parse(localStorage.getItem(valueSaveKey)); 
   }
 }
 
 const handleMemoryClear = () => {
-  if (localStorage.getItem(valueSaveKey) != null) {
-  removeFromMemory(valueSaveKey);
+
+  if(localStorage.getItem(valueSaveKey) != null){
+    removeFromMemory(valueSaveKey);
   }
 }
 
 const handleMemoryPlus = () => {
 
-  if (localStorage.getItem(valueSaveKey) != null) {
-   let getKey = JSON.parse(localStorage.getItem(valueSaveKey));
-   let textContent = input.textContent;
-   const newTextContent = getKey + eval(textContent);
-   saveInMemory(valueSaveKey,newTextContent);
+  if(localStorage.getItem(valueSaveKey) != null){
+    let getKey = JSON.parse(localStorage.getItem(valueSaveKey));
+    let textContent = input.textContent;
+    const newTextContent = getKey + eval(textContent);
+    saveInMemory(valueSaveKey,newTextContent);
   }
 }
 
 const handleMemoryMinus = () => {
  
-  if (localStorage.getItem(valueSaveKey) != null) {
-      let getKey = JSON.parse(localStorage.getItem(valueSaveKey));
-      let textContent = input.textContent;
-      const newTextContent = getKey - eval(textContent);
-      saveInMemory(valueSaveKey,newTextContent);
+  if(localStorage.getItem(valueSaveKey) != null){
+    let getKey = JSON.parse(localStorage.getItem(valueSaveKey));
+    let textContent = input.textContent;
+    const newTextContent = getKey - eval(textContent);
+    saveInMemory(valueSaveKey,newTextContent);
   }
 }
 
 const handleMemoryRead = () => {
 
-  if (localStorage.getItem(valueSaveKey) != null) {
-      const getKey = JSON.parse(localStorage.getItem(valueSaveKey));
-      input.textContent = getKey;
+  if(localStorage.getItem(valueSaveKey) != null){
+    const getKey = JSON.parse(localStorage.getItem(valueSaveKey));
+    input.textContent = getKey;
   }    
 }
