@@ -26,7 +26,7 @@ const isNumber = (btnKey) => {
   return !isNaN(btnKey)
 }
 
-const isOperator = (btnKey) => {
+const isOperator = (btnKey) => {   
   const operatorData = {
     '/': true,
     '(': true,
@@ -40,7 +40,7 @@ const isOperator = (btnKey) => {
 }
 
 
-document.onkeydown = function (event) {
+document.onkeydown = function (event) {  // ввод с клавиатуры
   const btnKey = event.key;
 
   if( isNumber(btnKey) || isOperator(btnKey) ){
@@ -100,13 +100,13 @@ const handleInsert = (num) => {
   input.textContent = input.textContent + num;
   let IndexLastElementString = input.textContent.length-1;
 
-    if(chekingLastInt(IndexLastElementString)){
+    if(chekingLastInt(IndexLastElementString)){// ограничение ввода знака до запятой
       saveZnakIndex = IndexLastElementString;
       counterLength = 12;
       counterInt = 0;
     }
 
-    else if(chekingLastFloat(IndexLastElementString)){
+    else if(chekingLastFloat(IndexLastElementString)){// ограничение повтора операторов
       counterInt = 0;
       counterLength = 8;
     }
@@ -119,7 +119,7 @@ const handleInsert = (num) => {
     handleBack();
     }
 
-    if(chekingLastPref(IndexLastElementString) && chekingLast(IndexLastElementString)){
+    if(chekingLastPref(IndexLastElementString) && chekingLast(IndexLastElementString)){// ограничение ввода знака до запятой
         handleBack();
     }
   }
@@ -163,7 +163,7 @@ const handleEqual = () => {
   let textContent = input.textContent;
 
   if(textContent !== zero){
-    input.textContent = eval(textContent).toFixed(numberAfterPoint);
+    input.textContent = eval(textContent).toFixed(numberAfterPoint);// идет округление числа после нажатия на равно
     let IndexLastElementString = input.textContent.length-1;
 
     while(input.textContent[IndexLastElementString] == zero){
@@ -190,7 +190,7 @@ const handleEqual = () => {
 const handleChange = () => {
   removeFromMemory(rvtSaveKey);
 
-  if(saveZnakIndex!=0){
+  if(saveZnakIndex!=0){ // условие если знак не равер нулевому индексу в строке
     shiftString(saveZnakIndex);
     addInsert(saveZnakIndex);
   }
@@ -201,22 +201,22 @@ const handleChange = () => {
 }
 
 const shiftString = (IndexLastElementString) => {
-  input.textContent = input.textContent + '...';
+  input.textContent = input.textContent + '...';// выделение памети под (, -, )
 
   for( let i = input.textContent.length - 1; i > IndexLastElementString+3; i--){
-    addCharacterInString(input.textContent, i-1, input.textContent[i-3]);
+    replaceCharacterInString(input.textContent, i-1, input.textContent[i-3]);
   }
 }
 
-const addInsert = (IndexLastElementString) => {
+const addInsert = (IndexLastElementString) => {  //функция вставки операторов в последнее хначение
   input.textContent[IndexLastElementString]= '(';
-  addCharacterInString(input.textContent,IndexLastElementString+1, '(');
-  addCharacterInString(input.textContent,IndexLastElementString+2, '-');
-  addCharacterInString(input.textContent, input.textContent.length-1, ')');
+  replaceCharacterInString(input.textContent,IndexLastElementString+1, '(');
+  replaceCharacterInString(input.textContent,IndexLastElementString+2, '-');
+  replaceCharacterInString(input.textContent, input.textContent.length-1, ')');
 }
 
 
-const addCharacterInString = (str, IndexLastElementString,str2) => {
+const replaceCharacterInString = (str, IndexLastElementString,str2) => {// функция замены знака
  str = setCharAt(str,IndexLastElementString,str2);
  input.textContent = str;
 }
